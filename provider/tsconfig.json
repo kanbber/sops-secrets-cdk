@@ -1,26 +1,23 @@
 {
   "compilerOptions": {
-    "target":"ES2018",
+    "target": "ES2017",
     "module": "commonjs",
-    "lib": ["es2018"],
     "declaration": true,
     "strict": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
     "noImplicitThis": true,
     "alwaysStrict": true,
-    "noUnusedLocals": false,
+    "esModuleInterop": true,
     "noUnusedParameters": false,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": false,
     "inlineSourceMap": true,
     "inlineSources": true,
-    "experimentalDecorators": true,
-    "strictPropertyInitialization":false,
+    "strictPropertyInitialization": false,
     "typeRoots": ["./node_modules/@types"],
-    "types": ["node", "jest"]
+    "types": ["node", "jest"],
+    "rootDir": "./"
   },
-  "include": [
-    "index.ts"
-  ]
+  "include": ["secretsManager.ts", "ssm.ts", "ssm2.ts", "assets/*.ts"]
 }

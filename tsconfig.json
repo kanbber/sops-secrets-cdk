@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target":"ES2018",
+    "target": "ES2018",
     "module": "commonjs",
     "lib": ["es2018"],
     "declaration": true,
@@ -16,11 +16,9 @@
     "inlineSourceMap": true,
     "inlineSources": true,
     "experimentalDecorators": true,
-    "strictPropertyInitialization":false,
+    "strictPropertyInitialization": false,
     "typeRoots": ["./node_modules/@types"],
     "types": ["node", "jest"]
   },
-  "include": [
-    "index.ts"
-  ]
+  "include": ["index.ts"]
 }

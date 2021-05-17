@@ -1,7 +1,7 @@
 import * as path from 'path';
 import * as childProcess from 'child_process';
 import * as events from 'events';
-import { onEvent } from '../';
+import { onEvent } from '../secretsManager';
 import { TextEncoder } from 'util';
 import { Writable } from 'stream';
 
@@ -101,7 +101,7 @@ describe('onCreate', () => {
             await onEvent({
                 RequestType: 'Create',
                 ResourceProperties: {
-                    KMSKeyArn: undefined,
+                    KMSKeyArn: 'myKey',
                     S3Bucket: 'mys3bucket',
                     S3Path: 'mys3path.yaml',
                     Mappings: JSON.stringify({
@@ -136,7 +136,7 @@ describe('onCreate', () => {
 
         expect(childProcess.spawn as jest.Mock).toBeCalledWith(
             'sh',
-            ['-c', 'cat', '-', '|', path.normalize(path.join(__dirname, '../sops')), '-d', '--input-type', 'yaml', '--output-type', 'json', '/dev/stdin'],
+            ['-c', 'cat', '-', '|', path.normalize(path.join(__dirname, '../sops')), '-d', '--input-type', 'yaml', '--output-type', 'json', '--kms', 'myKey', '/dev/stdin'],
             {
                 shell: true,
                 stdio: 'pipe',
@@ -157,7 +157,7 @@ describe('onCreate', () => {
         await onEvent({
             RequestType: 'Create',
             ResourceProperties: {
-                KMSKeyArn: undefined,
+                KMSKeyArn: 'myKey',
                 S3Bucket: 'mys3bucket',
                 S3Path: 'mys3path.yaml',
                 Mappings: JSON.stringify({
@@ -198,7 +198,7 @@ describe('onCreate', () => {
         await onEvent({
             RequestType: 'Create',
             ResourceProperties: {
-                KMSKeyArn: undefined,
+                KMSKeyArn: 'myKey',
                 S3Bucket: 'mys3bucket',
                 S3Path: 'mys3path.yaml',
                 Mappings: JSON.stringify({
@@ -237,7 +237,7 @@ describe('onCreate', () => {
         await onEvent({
             RequestType: 'Create',
             ResourceProperties: {
-                KMSKeyArn: undefined,
+                KMSKeyArn: 'myKey',
                 S3Bucket: 'mys3bucket',
                 S3Path: 'mys3path.txt',
                 Mappings: JSON.stringify({}),
@@ -250,7 +250,7 @@ describe('onCreate', () => {
 
         expect(childProcess.spawn as jest.Mock).toBeCalledWith(
             'sh',
-            ['-c', 'cat', '-', '|', path.normalize(path.join(__dirname, '../sops')), '-d', '--input-type', 'json', '--output-type', 'json', '/dev/stdin'],
+            ['-c', 'cat', '-', '|', path.normalize(path.join(__dirname, '../sops')), '-d', '--input-type', 'json', '--output-type', 'json', '--kms', 'myKey', '/dev/stdin'],
             {
                 shell: true,
                 stdio: 'pipe',

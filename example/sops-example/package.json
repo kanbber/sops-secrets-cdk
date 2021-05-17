@@ -16,17 +16,18 @@
     "@types/node": "10.17.27",
     "@typescript-eslint/eslint-plugin": "4.8.2",
     "@typescript-eslint/parser": "4.8.2",
-    "aws-cdk": "1.86.0",
+    "aws-cdk": "^1.86.0",
     "eslint": "6.8.0",
     "eslint-config-prettier": "6.9.0",
     "eslint-plugin-prettier": "3.1.2",
     "prettier": "1.19.1",
-    "ts-node": "^9.0.0",
+    "ts-node": "^8.0.0",
     "typescript": "~3.9.7"
   },
   "dependencies": {
-    "@aws-cdk/core": "1.86.0",
-    "@aws-cdk/aws-secretsmanager": "1.86.0",
+    "@aws-cdk/aws-kms": "^1.86.0",
+    "@aws-cdk/aws-secretsmanager": "^1.86.0",
+    "@aws-cdk/core": "^1.86.0",
     "source-map-support": "^0.5.16"
   }
 }

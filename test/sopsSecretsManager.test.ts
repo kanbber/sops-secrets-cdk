@@ -8,8 +8,10 @@ import * as s3Assets from '@aws-cdk/aws-s3-assets';
 
 test('creates a secret, and a custom resource', () => {
     const stack = new Stack();
+    const key = new kms.Key(stack, 'testKey');
 
     const secretValues = new SopsSecretsManager(stack, 'SecretValues', {
+        kmsKey: key,
         secretName: 'MySecret',
         path: './test/test.yaml',
         mappings: {
@@ -35,6 +37,7 @@ test('creates a secret, and a custom resource', () => {
 
 test('errors if passed a secret and a secretName', () => {
     const stack = new Stack();
+    const key = new kms.Key(stack, 'testKey');
 
     const secret = new secretsManager.Secret(stack, 'Secret', {
         secretName: 'MySecret',
@@ -42,6 +45,7 @@ test('errors if passed a secret and a secretName', () => {
 
     expect(() => {
         new SopsSecretsManager(stack, 'SecretValues', {
+            kmsKey: key,
             secretName: 'MySecret',
             secret,
             path: './test/test.yaml',
@@ -56,9 +60,11 @@ test('errors if passed a secret and a secretName', () => {
 
 test('errors if passed neither a secret nor a secretName', () => {
     const stack = new Stack();
+    const key = new kms.Key(stack, 'testKey');
 
     expect(() => {
         new SopsSecretsManager(stack, 'SecretValues', {
+            kmsKey: key,
             path: './test/test.yaml',
             mappings: {
                 mykey: {
@@ -71,9 +77,11 @@ test('errors if passed neither a secret nor a secretName', () => {
 
 test('errors if passed mappings and wholeFile=true', () => {
     const stack = new Stack();
+    const key = new kms.Key(stack, 'testKey');
 
     expect(() => {
         new SopsSecretsManager(stack, 'SecretValues', {
+            kmsKey: key,
             secretName: 'MySecret',
             path: './test/test.yaml',
             mappings: {
@@ -88,9 +96,11 @@ test('errors if passed mappings and wholeFile=true', () => {
 
 test('errors if passed neither mappings and nor wholeFile=true', () => {
     const stack = new Stack();
+    const key = new kms.Key(stack, 'testKey');
 
     expect(() => {
         new SopsSecretsManager(stack, 'SecretValues', {
+            kmsKey: key,
             secretName: 'MySecret',
             path: './test/test.yaml',
         });
@@ -99,8 +109,10 @@ test('errors if passed neither mappings and nor wholeFile=true', () => {
 
 test('can set wholeFile=true', () => {
     const stack = new Stack();
+    const key = new kms.Key(stack, 'testKey');
 
     const secretValues = new SopsSecretsManager(stack, 'SecretValues', {
+        kmsKey: key,
         secretName: 'MySecret',
         path: './test/test.yaml',
         wholeFile: true,
@@ -142,12 +154,14 @@ test('can pass a kms key', () => {
 
 test('can pass an asset rather than a path', () => {
     const stack = new Stack();
+    const key = new kms.Key(stack, 'testKey');
 
     const secretAsset = new s3Assets.Asset(stack, 'SecretAsset', {
         path: './test/test.yaml',
     });
 
     new SopsSecretsManager(stack, 'SecretValues', {
+        kmsKey: key,
         secretName: 'MySecret',
         asset: secretAsset,
         mappings: {
@@ -167,13 +181,14 @@ test('can pass an asset rather than a path', () => {
 
 test('errors if passed both a path and an asset', () => {
     const stack = new Stack();
-
+    const key = new kms.Key(stack, 'testKey');
     const secretAsset = new s3Assets.Asset(stack, 'SecretAsset', {
         path: './test/test.yaml',
     });
 
     expect(() => {
         new SopsSecretsManager(stack, 'SecretValues', {
+            kmsKey: key,
             secretName: 'MySecret',
             path: './test/test.yaml',
             asset: secretAsset,
@@ -183,9 +198,11 @@ test('errors if passed both a path and an asset', () => {
 
 test('errors if passed neither a path nor an asset', () => {
     const stack = new Stack();
+    const key = new kms.Key(stack, 'testKey');
 
     expect(() => {
         new SopsSecretsManager(stack, 'SecretValues', {
+            kmsKey: key,
             secretName: 'MySecret',
         });
     }).toThrowError();
@@ -193,12 +210,14 @@ test('errors if passed neither a path nor an asset', () => {
 
 test('uses a secret, creates a custom resource', () => {
     const stack = new Stack();
+    const key = new kms.Key(stack, 'testKey');
 
     const secret = new secretsManager.Secret(stack, 'Secret', {
         secretName: 'MySecret',
     });
 
     new SopsSecretsManager(stack, 'SecretValues', {
+        kmsKey: key,
         secret,
         path: './test/test.yaml',
         mappings: {

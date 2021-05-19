@@ -21,7 +21,7 @@ test('creates a secret, and a custom resource', () => {
     cdkExpect(stack).to(
         haveResource('Custom::SopsSSMParameter', {
             KMSKeyArn: stack.resolve(key.keyArn),
-            Mappings: '{"mykey":{"path":["a","b"]}}',
+            SopsPath: ['a', 'b'],
         }),
     );
 });

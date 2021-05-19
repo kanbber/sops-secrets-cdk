@@ -36,23 +36,85 @@ interface SopsSecretsMangerProviderProps extends SopsProviderProps {
 }
 
 export interface SopsSSMParameterProps {
+    /**
+     * SSM Parameter to add a scret to. Either this xor ssmParameterName has to exists.
+     */
     readonly ssmParameter?: ssm.IParameter;
+
+    /**
+     * SSM Parameter name for the new parameter. Either this xor ssmParamete has to exists.
+     */
     readonly ssmParameterName?: string;
+
+    /**
+     * The S3 asset the sops file is in. Either this asset xor filePath have to be present.
+     */
     readonly asset?: s3Assets.Asset;
+
+    /**
+     * path to the sops file. Either this filePath xor asset have to be present.
+     */
     readonly filePath?: string;
+
+    /**
+     * KMS key to use.
+     */
     readonly kmsKey: kms.IKey;
+
+    /**
+     * Array with the path to the secret in the json or yaml sopy file
+     */
     readonly secretsPath: Array<string>;
+
+    /**
+     * Are we using yaml or json.
+     *
+     * @default json
+     */
     readonly fileType: SopsSecretsManagerFileType;
 }
 
 export interface SopsSecretsManagerProps {
+    /**
+     * aws secret to tadd the data from the sops file to.
+     */
     readonly secret?: secretsManager.Secret | secretsManager.ISecret;
+
+    /**
+     * Name of the secret. Is only needed when no secret is given.
+     */
     readonly secretName?: string;
+
+    /**
+     * The S3 asset the sops file is in. Either this asset xor filePath have to be present.
+     */
     readonly asset?: s3Assets.Asset;
+
+    /**
+     * If no asset was given. A path to the sops file has to exist.
+     */
     readonly path?: string;
+
+    /**
+     * KMSKey to use for decryption
+     */
     readonly kmsKey: kms.IKey;
+
+    /**
+     * Mapping of the Secrets to add and the path where it is stored in the sops file.
+     */
     readonly mappings?: SopsSecretsManagerMappings;
+
+    /**
+     * Take the whole file insted of a mapping.
+     */
     readonly wholeFile?: boolean;
+
+    /**
+     * Are we using yaml or json.
+     *
+     * @default json
+     */
     readonly fileType?: SopsSecretsManagerFileType;
 }
 

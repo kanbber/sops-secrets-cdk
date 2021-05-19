@@ -1,4 +1,4 @@
-import * as map from '../mapper';
+import * as map from '../assets/mapper';
 
 test('empty', () => {
     expect(1).toBe(1);

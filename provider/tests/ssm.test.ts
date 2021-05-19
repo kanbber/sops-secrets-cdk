@@ -53,9 +53,9 @@ class MockChildProcess extends events.EventEmitter {
         this.stdout = new events.EventEmitter();
         this.stderr = new events.EventEmitter();
 
-        this.stdin = ({
+        this.stdin = {
             end: jest.fn(),
-        } as unknown) as Writable;
+        } as unknown as Writable;
     }
 }
 
@@ -89,7 +89,7 @@ const setMockSpawn = (props: SetMockSpawnProps): MockChildProcess => {
     return emitter;
 };
 
-describe.only('OnCreate', () => {
+describe('OnCreate', () => {
     test('simpleCreate', async () => {
         const mockProc = setMockSpawn({ stdoutData: JSON.stringify({ a: 'abc', b: 'def' }) });
         mockS3GetObject.mockImplementation(() => ({
@@ -107,19 +107,12 @@ describe.only('OnCreate', () => {
             ResourceProperties: {
                 KMSKeyArn: 'key/123',
                 S3Bucket: 'bucket',
+                SopsSSMParameter: 'parmeter',
+                SopsPath: ['a'],
                 S3Path: 'test.yaml',
-                Mappings: JSON.stringify({
-                    '/kanbber/temp/test1': {
-                        path: ['a'],
-                    },
-                    '/kanbber/temp/test2': {
-                        path: ['b'],
-                    },
-                }),
                 FileType: 'yaml',
             },
         });
-        expect(res.Data).toStrictEqual({});
         expect(res.PhysicalResourceId).toContain('ssm_secretdata_');
         expect(mockProc.stdin.end).toBeCalledWith('a: 1234, b: 4321');
         expect(mockS3GetObject).toBeCalledWith({
@@ -129,7 +122,7 @@ describe.only('OnCreate', () => {
 
         expect(childProcess.spawn as jest.Mock).toBeCalledWith(
             'sh',
-            ['-c', 'cat', '-', '|', path.normalize(path.join(__dirname, '../sops')), '-d', '--input-type', 'yaml', '--output-type', 'json', '--kms', 'key/123', '/dev/stdin'],
+            ['-c', 'cat', '-', '|', path.normalize(path.join(__dirname, '../assets/sops')), '-d', '--input-type', 'yaml', '--output-type', 'json', '--kms', 'key/123', '/dev/stdin'],
             {
                 shell: true,
                 stdio: 'pipe',
@@ -151,16 +144,10 @@ describe('onDelete', () => {
                 ResourceProperties: {
                     KMSKeyArn: 'key/123',
                     S3Bucket: 'bucket',
+                    SopsSSMParameter: 'parmeter',
                     S3Path: 'test.yaml',
-                    Mappings: JSON.stringify({
-                        '/kanbber/temp/test1': {
-                            path: ['a'],
-                        },
-                        '/kanbber/temp/test2': {
-                            path: ['b'],
-                        },
-                    }),
-                    FileType: 'yaml',
+                    SopsPath: ['key1'],
+                    FileType: 'json',
                 },
             }),
         ).toEqual({
@@ -179,16 +166,10 @@ describe('unknown event type', () => {
                 ResourceProperties: {
                     KMSKeyArn: 'key/123',
                     S3Bucket: 'bucket',
+                    SopsSSMParameter: 'parmeter',
                     S3Path: 'test.yaml',
-                    Mappings: JSON.stringify({
-                        '/fgr/temp/test1': {
-                            path: ['a'],
-                        },
-                        '/fgr/temp/test2': {
-                            path: ['b'],
-                        },
-                    }),
-                    FileType: 'yaml',
+                    SopsPath: ['key1'],
+                    FileType: 'json',
                 },
                 PhysicalResourceId: 'ssm_secretdata_123',
             }),

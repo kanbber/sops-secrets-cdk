@@ -48,9 +48,9 @@ class MockChildProcess extends events.EventEmitter {
         this.stdout = new events.EventEmitter();
         this.stderr = new events.EventEmitter();
 
-        this.stdin = ({
+        this.stdin = {
             end: jest.fn(),
-        } as unknown) as Writable;
+        } as unknown as Writable;
     }
 }
 
@@ -112,7 +112,7 @@ describe('onCreate', () => {
                     WholeFile: false,
                     SecretArn: 'mysecretarn',
                     SourceHash: '123',
-                    FileType: undefined,
+                    FileType: 'json',
                 },
             }),
         ).toEqual({
@@ -136,7 +136,7 @@ describe('onCreate', () => {
 
         expect(childProcess.spawn as jest.Mock).toBeCalledWith(
             'sh',
-            ['-c', 'cat', '-', '|', path.normalize(path.join(__dirname, '../sops')), '-d', '--input-type', 'yaml', '--output-type', 'json', '--kms', 'myKey', '/dev/stdin'],
+            ['-c', 'cat', '-', '|', path.normalize(path.join(__dirname, '../assets/sops')), '-d', '--input-type', 'json', '--output-type', 'json', '--kms', 'myKey', '/dev/stdin'],
             {
                 shell: true,
                 stdio: 'pipe',
@@ -169,7 +169,7 @@ describe('onCreate', () => {
                 WholeFile: false,
                 SecretArn: 'mysecretarn',
                 SourceHash: '123',
-                FileType: undefined,
+                FileType: 'json',
             },
         });
 
@@ -210,7 +210,7 @@ describe('onCreate', () => {
                 WholeFile: 'false', // because a boolean set in the CDK becomes a string once it reaches the provider
                 SecretArn: 'mysecretarn',
                 SourceHash: '123',
-                FileType: undefined,
+                FileType: 'json',
             },
         });
 
@@ -244,13 +244,13 @@ describe('onCreate', () => {
                 WholeFile: true,
                 SecretArn: 'mysecretarn',
                 SourceHash: '123',
-                FileType: undefined,
+                FileType: 'json',
             },
         });
 
         expect(childProcess.spawn as jest.Mock).toBeCalledWith(
             'sh',
-            ['-c', 'cat', '-', '|', path.normalize(path.join(__dirname, '../sops')), '-d', '--input-type', 'json', '--output-type', 'json', '--kms', 'myKey', '/dev/stdin'],
+            ['-c', 'cat', '-', '|', path.normalize(path.join(__dirname, '../assets/sops')), '-d', '--input-type', 'json', '--output-type', 'json', '--kms', 'myKey', '/dev/stdin'],
             {
                 shell: true,
                 stdio: 'pipe',

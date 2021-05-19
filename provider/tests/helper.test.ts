@@ -1,4 +1,4 @@
-import * as help from '../helper';
+import * as help from '../assets/helper';
 
 describe('bool tests', () => {
     test('test', () => {
